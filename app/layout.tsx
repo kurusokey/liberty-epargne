@@ -6,6 +6,16 @@ import { createClient } from "@/lib/supabase/server";
 export const metadata: Metadata = {
   title: "Liberty Épargne",
   description: "Suivi d'épargne — Objectif 10 000 € en 12 mois",
+  manifest: "/manifest.json",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "black-translucent",
+    title: "Liberty Epargne",
+  },
+  icons: {
+    icon: "/icons/icon-192.svg",
+    apple: "/icons/icon-192.svg",
+  },
 };
 
 export const viewport: Viewport = {
@@ -15,6 +25,8 @@ export const viewport: Viewport = {
   ],
   width: "device-width",
   initialScale: 1,
+  maximumScale: 1,
+  viewportFit: "cover",
 };
 
 export default async function RootLayout({
@@ -46,6 +58,7 @@ export default async function RootLayout({
       <body className="min-h-screen antialiased">
         {user && <Header email={user.email ?? ""} />}
         <main className="mx-auto max-w-6xl px-4 py-6 sm:px-6">{children}</main>
+        <script dangerouslySetInnerHTML={{ __html: `if('serviceWorker' in navigator){navigator.serviceWorker.register('/sw.js').catch(()=>{})}` }} />
       </body>
     </html>
   );
