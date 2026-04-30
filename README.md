@@ -10,6 +10,7 @@ Stack : Next.js 15 (App Router) · Supabase (Auth + Postgres + Realtime + RLS) �
 - Saisie mensuelle : versements, soldes réels, intérêts, notes. Bouton **Simuler versement** pré-remplit selon les cibles + intérêts composés.
 - Alertes < 800 € / mois.
 - Export CSV (compatible Excel).
+- **Conseil IA (`/conseil`)** : moteur d'optimisation. Règles métier (PER si TMI ≥ 30%, plafond Livret A, ancienneté PEA, fonds urgence) + analyse Claude (`claude-sonnet-4-6` avec prompt caching) qui propose une nouvelle répartition mensuelle. Bouton **Appliquer** met à jour les cibles d'un clic.
 - Auth Supabase email/password + Google OAuth.
 - RLS : chaque utilisateur ne voit que ses propres données.
 - Thème clair/sombre, mobile-first, en français.
@@ -18,7 +19,7 @@ Stack : Next.js 15 (App Router) · Supabase (Auth + Postgres + Realtime + RLS) �
 
 ### 1. Supabase
 1. Crée un projet sur [supabase.com](https://supabase.com).
-2. Dans le **SQL Editor**, exécute `supabase/schema.sql`.
+2. Dans le **SQL Editor**, exécute `supabase/schema.sql` puis `supabase/migrations/001_user_profile.sql` (pour le Conseil IA).
 3. **Authentication → Providers** : active **Email** (avec confirmation si tu veux) et **Google** (renseigne `Client ID` + `Secret`).
 4. **Authentication → URL Configuration** : ajoute ces redirect URLs :
    - `http://localhost:3000/auth/callback`
@@ -29,8 +30,10 @@ Copie `.env.example` vers `.env.local` puis remplis :
 ```
 NEXT_PUBLIC_SUPABASE_URL=https://xxxxx.supabase.co
 NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJxxxxx
+ANTHROPIC_API_KEY=sk-ant-xxxxx
 ```
-(Trouvé dans Supabase → Project Settings → API.)
+(Supabase → Project Settings → API · Anthropic → console.anthropic.com/settings/keys.)
+La clé Anthropic n'est utilisée que côté serveur (jamais exposée au navigateur).
 
 ### 3. Local
 ```bash

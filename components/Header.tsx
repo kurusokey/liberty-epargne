@@ -38,6 +38,7 @@ export function Header({ email }: { email: string }) {
         </Link>
         <nav className="flex items-center gap-1">
           {navItem("/", "Dashboard")}
+          {navItem("/conseil", "Conseil IA")}
           {navItem("/settings", "Paramètres")}
         </nav>
         <div className="flex items-center gap-1">

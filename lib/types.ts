@@ -11,6 +11,38 @@ export interface Category {
   created_at: string;
 }
 
+export type ProfilRisque = "prudent" | "equilibre" | "dynamique";
+
+export interface UserProfile {
+  user_id: string;
+  age: number | null;
+  tmi: number | null;                  // 0 / 11 / 30 / 41 / 45
+  fonds_urgence_mois: number | null;
+  horizon_annees: number | null;
+  profil_risque: ProfilRisque | null;
+  objectif: string | null;
+  livret_a_solde: number;
+  livret_a_plafond: number;
+  pea_date_ouverture: string | null;
+  notes: string | null;
+  updated_at: string;
+}
+
+export interface AllocationCible {
+  livret: number;
+  av: number;
+  pea: number;
+  per: number;
+}
+
+export interface Reco {
+  level: "info" | "warning" | "success";
+  title: string;
+  detail: string;
+  source: "rule" | "ai";
+  action?: AllocationCible;
+}
+
 export interface MoisEpargne {
   id: string;
   user_id: string;
