@@ -363,56 +363,59 @@ export function ConseilForm({ profileInit, categories, mois }: Props) {
           <p className="text-sm text-amber-600">⚠️ {apiResp.claudeError}</p>
         )}
 
-        {apiResp?.claude && (
-          <div className="space-y-4">
-            <p className="text-sm leading-relaxed text-slate-700 dark:text-slate-300">
-              {apiResp.claude.analyse}
-            </p>
+        {apiResp?.claude && localRules && (() => {
+          const c = apiResp.claude;
+          return (
+            <div className="space-y-4">
+              <p className="text-sm leading-relaxed text-slate-700 dark:text-slate-300">
+                {c.analyse}
+              </p>
 
-            <AllocationDiff
-              actuelle={localRules!.allocation_actuelle}
-              suggeree={apiResp.claude.allocation_recommandee}
-              label="Allocation recommandée par Claude"
-              onApply={() => applyAllocation(apiResp.claude!.allocation_recommandee)}
-              applying={applyingAlloc}
-            />
+              <AllocationDiff
+                actuelle={localRules.allocation_actuelle}
+                suggeree={c.allocation_recommandee}
+                label="Allocation recommandée par Claude"
+                onApply={() => applyAllocation(c.allocation_recommandee)}
+                applying={applyingAlloc}
+              />
 
-            <div className="grid gap-2 sm:grid-cols-2">
-              {(["livret", "av", "pea", "per"] as const).map((k) => (
-                <div
-                  key={k}
-                  className="rounded-lg border bg-slate-50 p-3 text-xs dark:border-slate-800 dark:bg-slate-900/60"
-                >
-                  <p className="font-semibold">{CATEGORY_LABELS[k]}</p>
-                  <p className="mt-0.5 text-slate-600 dark:text-slate-400">
-                    {apiResp.claude.raison_par_enveloppe[k]}
-                  </p>
-                </div>
-              ))}
-            </div>
-
-            {apiResp.claude.alertes.length > 0 && (
-              <ul className="space-y-1 rounded-lg bg-amber-50 p-3 text-xs text-amber-900 dark:bg-amber-900/20 dark:text-amber-200">
-                {apiResp.claude.alertes.map((a, i) => (
-                  <li key={i}>⚠️ {a}</li>
+              <div className="grid gap-2 sm:grid-cols-2">
+                {(["livret", "av", "pea", "per"] as const).map((k) => (
+                  <div
+                    key={k}
+                    className="rounded-lg border bg-slate-50 p-3 text-xs dark:border-slate-800 dark:bg-slate-900/60"
+                  >
+                    <p className="font-semibold">{CATEGORY_LABELS[k]}</p>
+                    <p className="mt-0.5 text-slate-600 dark:text-slate-400">
+                      {c.raison_par_enveloppe[k]}
+                    </p>
+                  </div>
                 ))}
-              </ul>
-            )}
+              </div>
 
-            <p className="text-xs text-slate-500">
-              Gain estimé vs allocation actuelle :{" "}
-              <span className="font-semibold text-emerald-500">
-                +{formatEUR(apiResp.claude.gain_estime_vs_actuel_eur_an)}
-              </span>{" "}
-              / an
-              {apiResp.cacheStats && apiResp.cacheStats.read > 0 && (
-                <span className="ml-2">
-                  · cache hit {apiResp.cacheStats.read} tokens
-                </span>
+              {c.alertes.length > 0 && (
+                <ul className="space-y-1 rounded-lg bg-amber-50 p-3 text-xs text-amber-900 dark:bg-amber-900/20 dark:text-amber-200">
+                  {c.alertes.map((a, i) => (
+                    <li key={i}>⚠️ {a}</li>
+                  ))}
+                </ul>
               )}
-            </p>
-          </div>
-        )}
+
+              <p className="text-xs text-slate-500">
+                Gain estimé vs allocation actuelle :{" "}
+                <span className="font-semibold text-emerald-500">
+                  +{formatEUR(c.gain_estime_vs_actuel_eur_an)}
+                </span>{" "}
+                / an
+                {apiResp.cacheStats && apiResp.cacheStats.read > 0 && (
+                  <span className="ml-2">
+                    · cache hit {apiResp.cacheStats.read} tokens
+                  </span>
+                )}
+              </p>
+            </div>
+          );
+        })()}
 
         {!apiResp && !askingClaude && (
           <p className="text-sm text-slate-500">
