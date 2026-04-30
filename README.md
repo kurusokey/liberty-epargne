@@ -48,11 +48,11 @@ gh repo create kurusokey/liberty-epargne --public --source=. --push
 Puis sur [vercel.com](https://vercel.com) → **Import Project** → ajoute les 2 env vars (`NEXT_PUBLIC_SUPABASE_URL` + `NEXT_PUBLIC_SUPABASE_ANON_KEY`) → Deploy.
 
 ### 5. Sous-domaine `epargne.sampapaya.com`
-1. **Vercel** → Project Liberty Épargne → Settings → Domains → ajoute `epargne.sampapaya.com`. Vercel donne un CNAME (`cname.vercel-dns.com`).
+1. **Vercel** → Project Liberty Épargne → Settings → Domains → ajoute `epargne.sampapaya.com`.
 2. **OVH** (DNS de sampapaya.com) → Zone DNS → ajoute :
    ```
    Type   Sous-domaine   Cible
-   CNAME  epargne        cname.vercel-dns.com.
+   A      epargne        76.76.21.21
    ```
 3. Attends la propagation (1-30 min) puis Vercel valide automatiquement le HTTPS.
 4. **Supabase** → Authentication → URL Configuration → ajoute `https://epargne.sampapaya.com/auth/callback` aux redirect URLs (et même chose côté Google OAuth Console si configuré séparément).
