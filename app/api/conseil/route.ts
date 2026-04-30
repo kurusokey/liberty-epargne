@@ -60,9 +60,12 @@ export async function POST() {
         {
           type: "text",
           text: SYSTEM_PROMPT_CONSEIL,
+          // Cast: cache_control fait partie du payload mais n'est pas typé
+          // dans toutes les versions SDK. Voir https://docs.anthropic.com/en/docs/build-with-claude/prompt-caching
           cache_control: { type: "ephemeral" },
         },
-      ],
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      ] as any,
       messages: [
         {
           role: "user",
