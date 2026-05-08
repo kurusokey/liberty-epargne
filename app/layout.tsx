@@ -59,6 +59,7 @@ export default async function RootLayout({
         {user && <Header email={user.email ?? ""} />}
         <main className="mx-auto max-w-6xl px-4 py-6 sm:px-6">{children}</main>
         <script dangerouslySetInnerHTML={{ __html: `if('serviceWorker' in navigator){navigator.serviceWorker.register('/sw.js').catch(()=>{})}` }} />
+              <a href="https://sampapaya.com" aria-label="Retour à sampapaya.com" style={{position:"fixed",top:10,right:10,zIndex:9999,background:"rgba(15,15,30,0.85)",color:"#F5A623",padding:"5px 12px",borderRadius:999,fontSize:11,fontFamily:"'JetBrains Mono',ui-monospace,monospace",fontWeight:500,textDecoration:"none",border:"1px solid rgba(245,166,35,0.3)",backdropFilter:"blur(8px)",WebkitBackdropFilter:"blur(8px)"}}>← sampapaya</a>
       </body>
     </html>
   );
